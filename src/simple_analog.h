@@ -2,7 +2,7 @@
 
 #include "pebble.h"
 
-#define NUM_CLOCK_TICKS 11
+#define NUM_CLOCK_TICKS 13
 
 static const struct GPathInfo ANALOG_BG_POINTS[] = {
   { 4,
@@ -32,6 +32,13 @@ static const struct GPathInfo ANALOG_BG_POINTS[] = {
       {144, 40},
       {144, 44},
       {135, 49}
+    }
+  },
+  { 4, (GPoint []){
+      {140, 83},
+      {144, 83},
+      {144, 85},
+      {140, 85}
     }
   },
   { 4, (GPoint []){
@@ -67,6 +74,13 @@ static const struct GPathInfo ANALOG_BG_POINTS[] = {
       {-1, 40},
       {-1, 44},
       {9, 49}
+    }
+  },
+  { 4, (GPoint []){
+      {0, 83},
+      {4, 83},
+      {4, 85},
+      {0, 85}
     }
   },
   { 4, (GPoint []){
