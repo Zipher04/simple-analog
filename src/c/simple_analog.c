@@ -2,6 +2,14 @@
 
 #include "pebble.h"
 
+#define COLOR_PURPLE GColorFromRGB(137,92,129)
+#define COLOR_SILVER GColorFromRGB(167,158,151)
+
+#define COLOR_MARKS_1 GColorBlack
+#define COLOR_MARKS_2 GColorBlack
+#define COLOR_HAND GColorShockingPink
+#define COLOR_DATE GColorBlack
+
 static Window *s_window;
 static Layer *s_simple_bg_layer, *s_date_layer, *s_hands_layer;
 static TextLayer *s_day_label, *s_num_label;
@@ -9,16 +17,28 @@ static TextLayer *s_day_label, *s_num_label;
 static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
 static char s_num_buffer[4], s_day_buffer[6];
+static BitmapLayer *s_background_layer;
+static GBitmap *s_background_bitmap;
 
 static void bg_update_proc(Layer *layer, GContext *ctx) {
-  graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
-  graphics_context_set_fill_color(ctx, GColorWhite);
+  //graphics_context_set_fill_color(ctx, GColorBlack);
+  //graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
+  //graphics_context_set_fill_color(ctx, COLOR_MARKS);
+	graphics_context_set_stroke_color(ctx, GColorBlack );
   for (int i = 0; i < NUM_CLOCK_TICKS; ++i) {
+	if (  0 == i
+	   || 1 == i
+		|| 2 == i
+		|| 8 == i
+		|| 9 == i    )
+	  {graphics_context_set_fill_color(ctx, COLOR_MARKS_1);}
+	else
+	  {graphics_context_set_fill_color(ctx, COLOR_MARKS_2);}
     const int x_offset = PBL_IF_ROUND_ELSE(18, 0);
     const int y_offset = PBL_IF_ROUND_ELSE(6, 0);
     gpath_move_to(s_tick_paths[i], GPoint(x_offset, y_offset));
     gpath_draw_filled(ctx, s_tick_paths[i]);
+	//gpath_draw_outline(ctx, s_tick_paths[i]);
   }
 }
 
@@ -37,12 +57,12 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   };
 
   // second hand
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, COLOR_HAND);
   graphics_draw_line(ctx, second_hand, center);
 
   // minute/hour hand
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_fill_color(ctx, COLOR_HAND);
+  graphics_context_set_stroke_color(ctx, GColorClear);
 
   gpath_rotate_to(s_minute_arrow, TRIG_MAX_ANGLE * t->tm_min / 60);
   gpath_draw_filled(ctx, s_minute_arrow);
@@ -53,7 +73,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   gpath_draw_outline(ctx, s_hour_arrow);
 
   // dot in the middle
-  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_context_set_fill_color(ctx, COLOR_SILVER);
   graphics_fill_rect(ctx, GRect(bounds.size.w / 2 - 1, bounds.size.h / 2 - 1, 3, 3), 0, GCornerNone);
 }
 
@@ -76,37 +96,45 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
+  // Set background image
+  s_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_IMG_XING );
+  // Create BitmapLayer to display the GBitmap
+  s_background_layer = bitmap_layer_create(bounds);
+  // Set the bitmap onto the layer and add to the window
+  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));	
+	
   s_simple_bg_layer = layer_create(bounds);
   layer_set_update_proc(s_simple_bg_layer, bg_update_proc);
   layer_add_child(window_layer, s_simple_bg_layer);
 
+  s_hands_layer = layer_create(bounds);
+  layer_set_update_proc(s_hands_layer, hands_update_proc);
+  layer_add_child(window_layer, s_hands_layer);
+	
   s_date_layer = layer_create(bounds);
   layer_set_update_proc(s_date_layer, date_update_proc);
   layer_add_child(window_layer, s_date_layer);
 
   s_day_label = text_layer_create(PBL_IF_ROUND_ELSE(
     GRect(63, 114, 27, 20),
-    GRect(46, 114, 27, 20)));
+    GRect(41, 114, 37, 30)));
   text_layer_set_text(s_day_label, s_day_buffer);
-  text_layer_set_background_color(s_day_label, GColorBlack);
-  text_layer_set_text_color(s_day_label, GColorWhite);
-  text_layer_set_font(s_day_label, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  text_layer_set_background_color(s_day_label, GColorClear);
+  text_layer_set_text_color(s_day_label, COLOR_DATE );
+  text_layer_set_font(s_day_label, fonts_get_system_font(FONT_KEY_GOTHIC_28));
 
   layer_add_child(s_date_layer, text_layer_get_layer(s_day_label));
 
   s_num_label = text_layer_create(PBL_IF_ROUND_ELSE(
     GRect(90, 114, 18, 20),
-    GRect(73, 114, 18, 20)));
+    GRect(78, 114, 37, 30)));
   text_layer_set_text(s_num_label, s_num_buffer);
-  text_layer_set_background_color(s_num_label, GColorBlack);
-  text_layer_set_text_color(s_num_label, GColorWhite);
-  text_layer_set_font(s_num_label, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  text_layer_set_background_color(s_num_label, GColorClear);
+  text_layer_set_text_color(s_num_label, COLOR_DATE);
+  text_layer_set_font(s_num_label, fonts_get_system_font(FONT_KEY_GOTHIC_28));
 
   layer_add_child(s_date_layer, text_layer_get_layer(s_num_label));
-
-  s_hands_layer = layer_create(bounds);
-  layer_set_update_proc(s_hands_layer, hands_update_proc);
-  layer_add_child(window_layer, s_hands_layer);
 }
 
 static void window_unload(Window *window) {
