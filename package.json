@@ -1,15 +1,88 @@
 {
-    "author": "Pebble Technology",
+    "author": "Zipher",
     "dependencies": {},
     "keywords": [],
-    "name": "my-simple-analog",
+    "name": "machikoanalog",
     "pebble": {
-        "displayName": "My Simple Analog",
+        "displayName": "MachikoAnalog",
         "enableMultiJS": false,
         "messageKeys": [],
         "projectType": "native",
         "resources": {
             "media": [
+                {
+                    "file": "images/menu.png",
+                    "menuIcon": true,
+                    "name": "menu",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1100.png",
+                    "name": "1100",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/2200.png",
+                    "name": "2200",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/main.png",
+                    "name": "main",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/2300.png",
+                    "name": "2300",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1900.png",
+                    "name": "1900",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/0700.png",
+                    "name": "0700",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1800.png",
+                    "name": "1800",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1700.png",
+                    "name": "1700",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1300.png",
+                    "name": "1300",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/0800.png",
+                    "name": "0800",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/0600.png",
+                    "name": "0600",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/xing.png",
                     "name": "IMG_XING",

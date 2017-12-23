@@ -5,8 +5,8 @@
 #define COLOR_PURPLE GColorFromRGB(137,92,129)
 #define COLOR_SILVER GColorFromRGB(167,158,151)
 
-#define COLOR_MARKS_1 GColorBlack
-#define COLOR_MARKS_2 GColorBlack
+#define COLOR_MARKS_1 GColorShockingPink
+#define COLOR_MARKS_2 GColorShockingPink
 #define COLOR_HAND GColorShockingPink
 #define COLOR_DATE GColorBlack
 
@@ -18,7 +18,60 @@ static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
 static char s_num_buffer[4], s_day_buffer[6];
 static BitmapLayer *s_background_layer;
-static GBitmap *s_background_bitmap;
+static GBitmap *s_background_bitmap = 0;
+
+static void choose_background_bitmap( void )
+{
+	GBitmap *new_background_bitmap;
+	time_t now = time(NULL);
+    struct tm *time = localtime(&now);
+	switch ( time->tm_hour )
+	{
+	case 6:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0600 );
+		break;
+	case 7:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0700 );
+		break;
+	case 8:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0800 );
+		break;
+	case 11:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1100 );
+		break;
+	case 13:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1300 );
+		break;
+	case 17:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
+		break;
+	case 18:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1800 );
+		break;
+	case 19:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1900 );
+		break;
+	case 22:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
+		break;
+	case 23:
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2300 );
+		break;
+	default:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_main );
+		break;
+	}
+	bitmap_layer_set_bitmap(s_background_layer, new_background_bitmap);
+	if ( 0 != s_background_bitmap )
+		gbitmap_destroy(s_background_bitmap);
+	s_background_bitmap = new_background_bitmap;
+}
 
 static void bg_update_proc(Layer *layer, GContext *ctx) {
   //graphics_context_set_fill_color(ctx, GColorBlack);
@@ -90,6 +143,8 @@ static void date_update_proc(Layer *layer, GContext *ctx) {
 
 static void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
   layer_mark_dirty(window_get_root_layer(s_window));
+  if ( (units_changed & HOUR_UNIT) != 0 )
+  	choose_background_bitmap();
 }
 
 static void window_load(Window *window) {
@@ -97,11 +152,11 @@ static void window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 
   // Set background image
-  s_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_IMG_XING );
+  //s_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_main );
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(bounds);
   // Set the bitmap onto the layer and add to the window
-  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+  choose_background_bitmap();
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));	
 	
   s_simple_bg_layer = layer_create(bounds);
@@ -118,11 +173,11 @@ static void window_load(Window *window) {
 
   s_day_label = text_layer_create(PBL_IF_ROUND_ELSE(
     GRect(63, 114, 27, 20),
-    GRect(41, 114, 37, 30)));
+    GRect(46, 114, 37, 30)));
   text_layer_set_text(s_day_label, s_day_buffer);
   text_layer_set_background_color(s_day_label, GColorClear);
   text_layer_set_text_color(s_day_label, COLOR_DATE );
-  text_layer_set_font(s_day_label, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+  text_layer_set_font(s_day_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
   layer_add_child(s_date_layer, text_layer_get_layer(s_day_label));
 
@@ -132,7 +187,7 @@ static void window_load(Window *window) {
   text_layer_set_text(s_num_label, s_num_buffer);
   text_layer_set_background_color(s_num_label, GColorClear);
   text_layer_set_text_color(s_num_label, COLOR_DATE);
-  text_layer_set_font(s_num_label, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+  text_layer_set_font(s_num_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
   layer_add_child(s_date_layer, text_layer_get_layer(s_num_label));
 }
@@ -145,6 +200,8 @@ static void window_unload(Window *window) {
   text_layer_destroy(s_num_label);
 
   layer_destroy(s_hands_layer);
+  bitmap_layer_destroy(s_background_layer);
+  gbitmap_destroy(s_background_bitmap);
 }
 
 static void init() {
