@@ -11,6 +11,30 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/2000.png",
+                    "name": "2000",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1500.png",
+                    "name": "1500",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1000.png",
+                    "name": "1000",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1200.png",
+                    "name": "1200",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/menu.png",
                     "menuIcon": true,
                     "name": "menu",
@@ -80,12 +104,6 @@
                 {
                     "file": "images/0600.png",
                     "name": "0600",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/xing.png",
-                    "name": "IMG_XING",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 }

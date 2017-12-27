@@ -36,11 +36,20 @@ static void choose_background_bitmap( void )
 	case 8:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0800 );
 		break;
+	case 10:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1000 );
+		break;
 	case 11:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1100 );
 		break;
+	case 12:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1200 );
+		break;
 	case 13:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1300 );
+		break;
+	case 15:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1500 );
 		break;
 	case 17:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
@@ -50,6 +59,9 @@ static void choose_background_bitmap( void )
 		break;
 	case 19:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1900 );
+		break;
+	case 20:
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2000 );
 		break;
 	case 22:
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
