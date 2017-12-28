@@ -138,8 +138,9 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   gpath_draw_outline(ctx, s_hour_arrow);
 
   // dot in the middle
-  graphics_context_set_fill_color(ctx, COLOR_SILVER);
-  graphics_fill_rect(ctx, GRect(bounds.size.w / 2 - 1, bounds.size.h / 2 - 1, 3, 3), 0, GCornerNone);
+  graphics_context_set_fill_color(ctx, GColorShockingPink);
+  //graphics_fill_rect(ctx, GRect(bounds.size.w / 2 - 1, bounds.size.h / 2 - 1, 13, 13), 0, GCornerNone);
+  graphics_fill_circle(ctx, GPoint(bounds.size.w / 2, bounds.size.h / 2), 2 );
 }
 
 static void date_update_proc(Layer *layer, GContext *ctx) {
