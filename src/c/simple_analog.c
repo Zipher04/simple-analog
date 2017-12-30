@@ -115,7 +115,8 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
 
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
-  int32_t second_angle = TRIG_MAX_ANGLE * t->tm_sec / 60;
+  
+/*	int32_t second_angle = TRIG_MAX_ANGLE * t->tm_sec / 60;
   GPoint second_hand = {
     .x = (int16_t)(sin_lookup(second_angle) * (int32_t)second_hand_length / TRIG_MAX_RATIO) + center.x,
     .y = (int16_t)(-cos_lookup(second_angle) * (int32_t)second_hand_length / TRIG_MAX_RATIO) + center.y,
@@ -124,7 +125,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   // second hand
   graphics_context_set_stroke_color(ctx, COLOR_HAND);
   graphics_draw_line(ctx, second_hand, center);
-
+*/
   // minute/hour hand
   graphics_context_set_fill_color(ctx, COLOR_HAND);
   graphics_context_set_stroke_color(ctx, GColorClear);
@@ -141,6 +142,13 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   graphics_context_set_fill_color(ctx, GColorShockingPink);
   //graphics_fill_rect(ctx, GRect(bounds.size.w / 2 - 1, bounds.size.h / 2 - 1, 13, 13), 0, GCornerNone);
   graphics_fill_circle(ctx, GPoint(bounds.size.w / 2, bounds.size.h / 2), 2 );
+	
+	static int old_hour = -1;
+	if ( old_hour != t->tm_hour )
+	{
+		choose_background_bitmap();
+		old_hour = t->tm_hour;
+	}
 }
 
 static void date_update_proc(Layer *layer, GContext *ctx) {
@@ -156,8 +164,6 @@ static void date_update_proc(Layer *layer, GContext *ctx) {
 
 static void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
   layer_mark_dirty(window_get_root_layer(s_window));
-  if ( (units_changed & HOUR_UNIT) != 0 )
-  	choose_background_bitmap();
 }
 
 static void window_load(Window *window) {
@@ -242,7 +248,7 @@ static void init() {
     s_tick_paths[i] = gpath_create(&ANALOG_BG_POINTS[i]);
   }
 
-  tick_timer_service_subscribe(SECOND_UNIT, handle_second_tick);
+  tick_timer_service_subscribe(MINUTE_UNIT, handle_second_tick);
 }
 
 static void deinit() {
