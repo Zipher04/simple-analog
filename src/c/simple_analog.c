@@ -22,9 +22,9 @@ static GBitmap *s_background_bitmap = 0;
 
 static void choose_background_bitmap( void )
 {
-	GBitmap *new_background_bitmap;
+	static GBitmap *new_background_bitmap;
 	time_t now = time(NULL);
-    struct tm *time = localtime(&now);
+  struct tm *time = localtime(&now);
 	switch ( time->tm_hour )
 	{
 	case 6:
@@ -79,6 +79,11 @@ static void choose_background_bitmap( void )
 		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_main );
 		break;
 	}
+	if ( NULL == new_background_bitmap )
+	{
+		text_layer_set_text(s_day_label, "?");
+		return;
+	}
 	bitmap_layer_set_bitmap(s_background_layer, new_background_bitmap);
 	if ( 0 != s_background_bitmap )
 		gbitmap_destroy(s_background_bitmap);
@@ -109,9 +114,9 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
 
 static void hands_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
-  GPoint center = grect_center_point(&bounds);
+  //GPoint center = grect_center_point(&bounds);
 
-  const int16_t second_hand_length = PBL_IF_ROUND_ELSE((bounds.size.w / 2) - 19, bounds.size.w / 2);
+  //const int16_t second_hand_length = PBL_IF_ROUND_ELSE((bounds.size.w / 2) - 19, bounds.size.w / 2);
 
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
