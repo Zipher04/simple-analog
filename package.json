@@ -11,6 +11,18 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/hand_minute.png",
+                    "name": "HAND_MINUTE",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/hour_hand.png",
+                    "name": "HAND_HOUR",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/2000.png",
                     "name": "2000",
                     "targetPlatforms": null,
