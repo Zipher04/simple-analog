@@ -25,24 +25,28 @@
                 {
                     "file": "images/2000.png",
                     "name": "2000",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1500.png",
                     "name": "1500",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1000.png",
                     "name": "1000",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1200.png",
                     "name": "1200",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -56,6 +60,7 @@
                 {
                     "file": "images/1100.png",
                     "name": "1100",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -68,6 +73,7 @@
                 {
                     "file": "images/main.png",
                     "name": "main",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -80,42 +86,49 @@
                 {
                     "file": "images/1900.png",
                     "name": "1900",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0700.png",
                     "name": "0700",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1800.png",
                     "name": "1800",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1700.png",
                     "name": "1700",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1300.png",
                     "name": "1300",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0800.png",
                     "name": "0800",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0600.png",
                     "name": "0600",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 }
