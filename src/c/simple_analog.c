@@ -1,6 +1,7 @@
 #include "simple_analog.h"
 
 #include "pebble.h"
+#include "health.h"
 
 #define COLOR_PURPLE GColorFromRGB(137,92,129)
 #define COLOR_SILVER GColorFromRGB(167,158,151)
@@ -12,7 +13,7 @@
 
 static Window *s_window;
 static Layer *s_layer_background_ticks, *s_layer_date, *s_hands_layer;
-static TextLayer *s_text_layer_weekday, *s_text_layer_day;
+static TextLayer *s_text_layer_weekday, *s_text_layer_day, *s_text_layer_step;
 
 static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
@@ -229,12 +230,19 @@ static void tick_service_callback(struct tm *tick_time, TimeUnits units_changed)
 	if ( (units_changed & MINUTE_UNIT) != 0 )
 	{
 		update_hand_positions( tick_time );
+		if ( is_health_updated() )
+		{
+	  	health_reload_averages(0);
+			text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
+		}
 	}
 }
 
 static void window_load(Window *window) {
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
+	
+	health_init();
 	
 	// Create background image
 	s_bitmap_layer_background = bitmap_layer_create(bounds);
@@ -301,10 +309,21 @@ static void window_load(Window *window) {
 	text_layer_set_font(s_text_layer_day, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 	layer_add_child(s_layer_date, text_layer_get_layer(s_text_layer_day));
 	
+	//step layer
+	s_text_layer_step = text_layer_create( GRect(45, 15, 54, 24) );
+	text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
+	//static char test[] = "1,234";
+	//text_layer_set_text( s_text_layer_step, test );
+	text_layer_set_background_color(s_text_layer_step, GColorClear);
+	text_layer_set_text_color( s_text_layer_step, GColorBlack );
+	text_layer_set_font( s_text_layer_step, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_step));
+	health_reload_averages(0);
 }
 
 static void window_unload(Window *window) {
 	
+	text_layer_destroy(s_text_layer_step);
 	text_layer_destroy(s_text_layer_day);
 	text_layer_destroy(s_text_layer_weekday);
 	layer_destroy(s_layer_date);
@@ -317,6 +336,8 @@ static void window_unload(Window *window) {
 	
 	bitmap_layer_destroy(s_bitmap_layer_background);
 	gbitmap_destroy(s_background_bitmap);
+	
+	health_deinit();
 	
 }
 
