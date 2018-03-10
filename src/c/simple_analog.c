@@ -310,9 +310,9 @@ static void window_load(Window *window) {
 	layer_add_child(s_layer_date, text_layer_get_layer(s_text_layer_day));
 	
 	//step layer
-	s_text_layer_step = text_layer_create( GRect(45, 15, 54, 24) );
+	s_text_layer_step = text_layer_create( GRect(40, 15, 64, 24) );
 	text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
-	//static char test[] = "1,234";
+	//static char test[] = "\U0001F4951,234";
 	//text_layer_set_text( s_text_layer_step, test );
 	text_layer_set_background_color(s_text_layer_step, GColorClear);
 	text_layer_set_text_color( s_text_layer_step, GColorBlack );

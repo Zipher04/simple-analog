@@ -46,7 +46,6 @@
                 {
                     "file": "images/1200.png",
                     "name": "1200",
-                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -60,7 +59,6 @@
                 {
                     "file": "images/1100.png",
                     "name": "1100",
-                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -80,6 +78,7 @@
                 {
                     "file": "images/2300.png",
                     "name": "2300",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -93,7 +92,6 @@
                 {
                     "file": "images/0700.png",
                     "name": "0700",
-                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
