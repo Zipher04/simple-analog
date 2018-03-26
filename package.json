@@ -11,45 +11,6 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/hand_minute.png",
-                    "name": "HAND_MINUTE",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/hour_hand.png",
-                    "name": "HAND_HOUR",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/2000.png",
-                    "name": "2000",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/1500.png",
-                    "name": "1500",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/1000.png",
-                    "name": "1000",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/1200.png",
-                    "name": "1200",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
                     "file": "images/menu.png",
                     "menuIcon": true,
                     "name": "menu",
@@ -57,20 +18,22 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/1100.png",
-                    "name": "1100",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/2200.png",
-                    "name": "2200",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
                     "file": "images/main.png",
                     "name": "main",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/hour_hand.png",
+                    "name": "HAND_HOUR",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/hand_minute.png",
+                    "name": "HAND_MINUTE",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
@@ -83,15 +46,23 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/1900.png",
-                    "name": "1900",
+                    "file": "images/2200.png",
+                    "name": "2200",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/0700.png",
-                    "name": "0700",
+                    "file": "images/2000.png",
+                    "name": "2000",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1900.png",
+                    "name": "1900",
+                    "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -110,6 +81,13 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/1500.png",
+                    "name": "1500",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/1300.png",
                     "name": "1300",
                     "spaceOptimization": "memory",
@@ -117,8 +95,36 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/1200.png",
+                    "name": "1200",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1100.png",
+                    "name": "1100",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/1000.png",
+                    "name": "1000",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/0800.png",
                     "name": "0800",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/0700.png",
+                    "name": "0700",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"

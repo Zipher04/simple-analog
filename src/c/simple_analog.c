@@ -245,7 +245,7 @@ static void window_load(Window *window) {
 	health_init();
 	
 	// Create background image
-	s_bitmap_layer_background = bitmap_layer_create(bounds);
+	s_bitmap_layer_background = bitmap_layer_create( GRect(16, 5, 112, 122) );
 	bitmap_layer_set_background_color( s_bitmap_layer_background, GColorClear );
 	bitmap_layer_set_compositing_mode( s_bitmap_layer_background, GCompOpSet );
 	choose_background_bitmap();
@@ -310,7 +310,7 @@ static void window_load(Window *window) {
 	layer_add_child(s_layer_date, text_layer_get_layer(s_text_layer_day));
 	
 	//step layer
-	s_text_layer_step = text_layer_create( GRect(40, 15, 64, 24) );
+	s_text_layer_step = text_layer_create( GRect(40, 134, 64, 24) );
 	text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
 	text_layer_set_text_alignment( s_text_layer_step, GTextAlignmentCenter );
 	//static char test[] = "\U0001F4951,234";
