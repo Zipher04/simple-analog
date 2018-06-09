@@ -30,59 +30,69 @@ static void choose_background_bitmap( void ) {
 	static GBitmap *new_background_bitmap;
 	time_t now = time(NULL);
 	struct tm *time = localtime(&now);
-	switch ( time->tm_hour )
+	if ( time->tm_wday == 0 || time->tm_wday == 6 )	//sunday and saturday
 	{
-	case 6:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0600 );
-		break;
-	case 7:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0700 );
-		break;
-	case 8:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0800 );
-		break;
-	case 10:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1000 );
-		break;
-	case 11:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1100 );
-		break;
-	case 12:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1200 );
-		break;
-	case 13:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1300 );
-		break;
-	case 15:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1500 );
-		break;
-	case 17:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
-		break;
-	case 18:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1800 );
-		break;
-	case 19:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1900 );
-		break;
-	case 20:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2000 );
-		break;
-	case 22:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
-		break;
-	case 23:
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2300 );
-		break;
-	default:
-		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_main );
-		break;
+		//if( time->tm_hour <= 8 )
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_HolidaySleep );
+		//else
+		//	new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
+	}
+	else
+	{
+		switch ( time->tm_hour )
+		{
+		case 6:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0600 );
+			break;
+		case 7:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0700 );
+			break;
+		case 8:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0800 );
+			break;
+		case 10:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1000 );
+			break;
+		case 11:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1100 );
+			break;
+		case 12:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1200 );
+			break;
+		case 13:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1300 );
+			break;
+		case 15:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1500 );
+			break;
+		case 17:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
+			break;
+		case 18:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1800 );
+			break;
+		case 19:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1900 );
+			break;
+		case 20:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2000 );
+			break;
+		case 22:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
+			break;
+		case 23:
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2300 );
+			break;
+		default:
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_main );
+			break;
+		}
 	}
 	if ( NULL == new_background_bitmap )
 	{

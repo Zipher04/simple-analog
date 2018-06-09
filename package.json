@@ -11,6 +11,20 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/sleep.jpg",
+                    "name": "HolidaySleep",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/holiday.png",
+                    "name": "HOLIDAY",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/menu.png",
                     "menuIcon": true,
                     "name": "menu",
