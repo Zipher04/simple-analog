@@ -18,8 +18,8 @@ static TextLayer *s_text_layer_weekday, *s_text_layer_day, *s_text_layer_step;
 static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
 static char s_num_buffer[4], s_day_buffer[6];
-static BitmapLayer *s_bitmap_layer_background;
-static GBitmap *s_background_bitmap = 0;
+static BitmapLayer *s_bitmap_layer_background, *s_bitmap_layer_background_base;
+static GBitmap *s_background_bitmap = 0, *s_background_bitmap_base = 0, *s_background_bitmap_transparent = 0;
 
 static GBitmap *s_bitmap_hour;
 static GBitmap *s_bitmap_minute;
@@ -30,12 +30,16 @@ static void choose_background_bitmap( void ) {
 	static GBitmap *new_background_bitmap;
 	time_t now = time(NULL);
 	struct tm *time = localtime(&now);
+	bool usingBase = false;
 	if ( time->tm_wday == 0 || time->tm_wday == 6 )	//sunday and saturday
 	{
-		//if( time->tm_hour <= 8 )
+		if( time->tm_hour <= 8 )
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_HolidaySleep );
-		//else
-		//	new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
+		else
+		{
+			usingBase = true;
+			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_TRANSPARENT );
+		}
 	}
 	else
 	{
@@ -99,6 +103,10 @@ static void choose_background_bitmap( void ) {
 		text_layer_set_text(s_text_layer_weekday, "?");
 		return;
 	}
+	if ( usingBase )
+		bitmap_layer_set_bitmap(s_bitmap_layer_background_base, s_background_bitmap_base);
+	else
+		bitmap_layer_set_bitmap(s_bitmap_layer_background_base, s_background_bitmap_transparent);
 	bitmap_layer_set_bitmap(s_bitmap_layer_background, new_background_bitmap);
 	if ( 0 != s_background_bitmap )
 	gbitmap_destroy(s_background_bitmap);
@@ -254,6 +262,14 @@ static void window_load(Window *window) {
 	
 	health_init();
 	
+	// Create background_base image
+	s_bitmap_layer_background_base = bitmap_layer_create( GRect(0, 0, 144, 168) );
+	bitmap_layer_set_background_color( s_bitmap_layer_background_base, GColorClear );
+	bitmap_layer_set_compositing_mode( s_bitmap_layer_background_base, GCompOpSet );
+	s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
+	s_background_bitmap_transparent = gbitmap_create_with_resource( RESOURCE_ID_TRANSPARENT );
+	layer_add_child( window_layer, bitmap_layer_get_layer(s_bitmap_layer_background_base));
+	
 	// Create background image
 	s_bitmap_layer_background = bitmap_layer_create( GRect(16, 5, 112, 122) );
 	bitmap_layer_set_background_color( s_bitmap_layer_background, GColorClear );
@@ -347,6 +363,10 @@ static void window_unload(Window *window) {
 	
 	bitmap_layer_destroy(s_bitmap_layer_background);
 	gbitmap_destroy(s_background_bitmap);
+	
+	bitmap_layer_destroy(s_bitmap_layer_background_base);
+	gbitmap_destroy(s_background_bitmap_transparent);
+	gbitmap_destroy(s_background_bitmap_base);
 	
 	health_deinit();
 	

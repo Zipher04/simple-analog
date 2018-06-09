@@ -11,6 +11,13 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/transparent.png",
+                    "name": "TRANSPARENT",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/sleep.jpg",
                     "name": "HolidaySleep",
                     "spaceOptimization": "memory",
