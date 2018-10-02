@@ -2,6 +2,7 @@
 
 #include "pebble.h"
 #include "health.h"
+#include "battery.h"
 
 #define COLOR_PURPLE GColorFromRGB(137,92,129)
 #define COLOR_SILVER GColorFromRGB(167,158,151)
@@ -14,6 +15,7 @@
 static Window *s_window;
 static Layer *s_layer_background_ticks, *s_layer_date, *s_hands_layer;
 static TextLayer *s_text_layer_weekday, *s_text_layer_day, *s_text_layer_step;
+static TextLayer *s_text_layer_battery;
 
 static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
@@ -254,6 +256,13 @@ static void tick_service_callback(struct tm *tick_time, TimeUnits units_changed)
 			text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
 		}
 	}
+	if ( is_battery_updated() )
+	{
+		if ( battery_is_charging() )
+			text_layer_set_text( s_text_layer_battery, "\U0001F606" );
+		else
+			text_layer_set_text( s_text_layer_battery, battery_get_current_level_buffer() );
+	}
 }
 
 static void window_load(Window *window) {
@@ -261,6 +270,7 @@ static void window_load(Window *window) {
 	GRect bounds = layer_get_bounds(window_layer);
 	
 	health_init();
+	battery_init();
 	
 	// Create background_base image
 	s_bitmap_layer_background_base = bitmap_layer_create( GRect(0, 0, 144, 168) );
@@ -346,6 +356,15 @@ static void window_load(Window *window) {
 	text_layer_set_font( s_text_layer_step, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
 	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_step));
 	health_reload_averages(0);
+	
+	//battery layer
+	s_text_layer_battery = text_layer_create( GRect(0, 0, bounds.size.w, 24) );
+	text_layer_set_text_alignment( s_text_layer_battery, GTextAlignmentRight );
+	text_layer_set_text( s_text_layer_battery, "10" );
+	text_layer_set_background_color( s_text_layer_battery, GColorClear);
+	text_layer_set_text_color( s_text_layer_battery, GColorBlack );
+	text_layer_set_font( s_text_layer_battery, fonts_get_system_font( FONT_KEY_GOTHIC_18 ));
+	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_battery) );
 }
 
 static void window_unload(Window *window) {
@@ -368,6 +387,7 @@ static void window_unload(Window *window) {
 	gbitmap_destroy(s_background_bitmap_transparent);
 	gbitmap_destroy(s_background_bitmap_base);
 	
+	battery_deinit();
 	health_deinit();
 	
 }
