@@ -2,9 +2,9 @@
     "author": "Zipher",
     "dependencies": {},
     "keywords": [],
-    "name": "machikoanalog",
+    "name": "MachikoDigital",
     "pebble": {
-        "displayName": "MachikoAnalog",
+        "displayName": "MachikoDigital",
         "enableMultiJS": false,
         "messageKeys": [],
         "projectType": "native",
@@ -156,6 +156,11 @@
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
+                },
+				{
+                    "file": "fonts/comicbd.ttf",
+                    "name": "FONT_COMIC_42",
+                    "type": "font"
                 }
             ]
         },
@@ -163,7 +168,7 @@
         "targetPlatforms": [
             "basalt"
         ],
-        "uuid": "ecc8f112-318f-4ee2-be11-53c63b8a1139",
+        "uuid": "ecc8f112-318f-4ee2-be11-520131409030",
         "watchapp": {
             "watchface": true
         }
