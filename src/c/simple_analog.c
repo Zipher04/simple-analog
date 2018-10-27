@@ -234,7 +234,7 @@ static void window_load(Window *window) {
 	health_reload_averages(0);
 	
 	//battery layer
-	s_text_layer_battery = text_layer_create( GRect(0, 0, bounds.size.w, 24) );
+	s_text_layer_battery = text_layer_create( GRect(0, 0, bounds.size.w, 18) );
 	text_layer_set_text_alignment( s_text_layer_battery, GTextAlignmentRight );
 	text_layer_set_text( s_text_layer_battery, "10" );
 	text_layer_set_background_color( s_text_layer_battery, GColorClear);
