@@ -282,6 +282,7 @@ static void window_load(Window *window) {
 		.did_change = prv_unobstructed_did_change
 	};
 	unobstructed_area_service_subscribe(handlers, NULL);
+	prv_unobstructed_did_change( 0 );
 }
 
 static void window_unload(Window *window) {
