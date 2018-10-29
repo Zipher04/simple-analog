@@ -17,12 +17,38 @@ static Layer *s_layer_date;
 static TextLayer *s_text_layer_weekday, *s_text_layer_day, *s_text_layer_step;
 static TextLayer *s_text_layer_battery;
 static TextLayer *s_time_layer;
+static TextLayer *s_small_time_layer;
 
 static char s_num_buffer[4], s_day_buffer[6];
 static BitmapLayer *s_bitmap_layer_background, *s_bitmap_layer_background_base;
 static GBitmap *s_background_bitmap = 0, *s_background_bitmap_base = 0, *s_background_bitmap_transparent = 0;
 
 static GFont s_time_font;
+
+static void prv_unobstructed_did_change(void *context) {
+	Layer *window_layer = window_get_root_layer(s_window);
+
+	// Get the full size of the screen
+	GRect full_bounds = layer_get_bounds(window_layer);
+	// Get the total available screen real-estate
+	GRect bounds = layer_get_unobstructed_bounds(window_layer);
+	if ( grect_equal(&full_bounds, &bounds) ) {
+		// Screen is no longer obstructed, show the date
+		layer_set_hidden(text_layer_get_layer(s_small_time_layer), true);
+		layer_set_hidden(text_layer_get_layer(s_time_layer), false);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_weekday), false);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_day), false);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_step), false);
+	}
+	else
+	{
+		layer_set_hidden(text_layer_get_layer(s_small_time_layer), false);
+		layer_set_hidden(text_layer_get_layer(s_time_layer), true);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_weekday), true);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_day), true);
+		layer_set_hidden(text_layer_get_layer(s_text_layer_step), true);
+	}
+}
 
 static void update_time( void )
 {
@@ -36,6 +62,7 @@ static void update_time( void )
   
   // Display this time on the TextLayer
   text_layer_set_text( s_time_layer, s_time_buffer );
+  text_layer_set_text( s_small_time_layer, s_time_buffer );
 }
 
 static void choose_background_bitmap( void ) {
@@ -186,6 +213,15 @@ static void window_load(Window *window) {
 	choose_background_bitmap();
 	layer_add_child( window_layer, bitmap_layer_get_layer(s_bitmap_layer_background));
 	
+	// Create small time layer
+	s_small_time_layer = text_layer_create( GRect( 0, 0, bounds.size.w, 18 ) );
+	text_layer_set_background_color( s_small_time_layer, GColorWhite );
+	text_layer_set_text_color( s_small_time_layer, GColorBlack );
+	text_layer_set_font( s_small_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD) );
+	text_layer_set_text_alignment( s_small_time_layer, GTextAlignmentCenter );
+	layer_add_child( window_layer, text_layer_get_layer(s_small_time_layer) );
+	layer_set_hidden( text_layer_get_layer(s_small_time_layer), true );
+	
 	// Time font
 	s_time_font = fonts_load_custom_font( resource_get_handle(RESOURCE_ID_FONT_COMIC_42));
 	
@@ -241,10 +277,17 @@ static void window_load(Window *window) {
 	text_layer_set_text_color( s_text_layer_battery, GColorBlack );
 	text_layer_set_font( s_text_layer_battery, fonts_get_system_font( FONT_KEY_GOTHIC_18 ));
 	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_battery) );
+	
+	UnobstructedAreaHandlers handlers = {
+		.did_change = prv_unobstructed_did_change
+	};
+	unobstructed_area_service_subscribe(handlers, NULL);
 }
 
 static void window_unload(Window *window) {
 	
+	unobstructed_area_service_unsubscribe();
+
 	text_layer_destroy(s_text_layer_step);
 	text_layer_destroy(s_text_layer_day);
 	text_layer_destroy(s_text_layer_weekday);

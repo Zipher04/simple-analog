@@ -159,6 +159,11 @@
                 },
 				{
                     "file": "fonts/comicbd.ttf",
+                    "name": "FONT_COMIC_BOLD_42",
+                    "type": "font"
+                },
+				{
+                    "file": "fonts/comic.ttf",
                     "name": "FONT_COMIC_42",
                     "type": "font"
                 }
