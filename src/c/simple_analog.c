@@ -18,12 +18,18 @@ static TextLayer *s_text_layer_weekday, *s_text_layer_day, *s_text_layer_step;
 static TextLayer *s_text_layer_battery;
 static TextLayer *s_time_layer;
 static TextLayer *s_small_time_layer;
+static TextLayer *s_weather_layer;
 
 static char s_num_buffer[4], s_day_buffer[6];
 static BitmapLayer *s_bitmap_layer_background, *s_bitmap_layer_background_base;
 static GBitmap *s_background_bitmap = 0, *s_background_bitmap_base = 0, *s_background_bitmap_transparent = 0;
 
 static GFont s_time_font;
+
+// Store weather information
+static char temperature_buffer[8];
+static char conditions_buffer[32];
+static char weather_layer_buffer[32];
 
 static void prv_unobstructed_did_change(void *context) {
 	Layer *window_layer = window_get_root_layer(s_window);
@@ -278,6 +284,15 @@ static void window_load(Window *window) {
 	text_layer_set_font( s_text_layer_battery, fonts_get_system_font( FONT_KEY_GOTHIC_18 ));
 	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_battery) );
 	
+	//weather
+	s_weather_layer = text_layer_create( GRect(0, 0, bounds.size.w, 25) );
+	text_layer_set_background_color(s_weather_layer, GColorClear);
+	text_layer_set_text_color(s_weather_layer, GColorBlack);
+	text_layer_set_text_alignment(s_weather_layer, GTextAlignmentLeft);
+	text_layer_set_text(s_weather_layer, "Loading...");
+	text_layer_set_font(s_weather_layer, fonts_get_system_font( FONT_KEY_GOTHIC_18 ) );
+	layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
+	
 	UnobstructedAreaHandlers handlers = {
 		.did_change = prv_unobstructed_did_change
 	};
@@ -289,12 +304,15 @@ static void window_unload(Window *window) {
 	
 	unobstructed_area_service_unsubscribe();
 
+	text_layer_destroy(s_weather_layer);
+	
 	text_layer_destroy(s_text_layer_step);
 	text_layer_destroy(s_text_layer_day);
 	text_layer_destroy(s_text_layer_weekday);
 	layer_destroy(s_layer_date);
 	
 	text_layer_destroy(s_time_layer);
+	fonts_unload_custom_font(s_time_font);
 	
 	bitmap_layer_destroy(s_bitmap_layer_background);
 	gbitmap_destroy(s_background_bitmap);
@@ -307,8 +325,43 @@ static void window_unload(Window *window) {
 	health_deinit();
 	
 }
+//appmessage
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+	// Read tuples for data
+	Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
+	Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
+
+	// If all data is available, use it
+	if(temp_tuple && conditions_tuple) {
+	  snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)temp_tuple->value->int32);
+	  snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+	}
+	// Assemble full string and display
+	snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+	text_layer_set_text(s_weather_layer, weather_layer_buffer);
+}
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
 
 static void init() {
+	app_message_register_inbox_received(inbox_received_callback);
+	app_message_register_inbox_dropped(inbox_dropped_callback);
+	app_message_register_outbox_failed(outbox_failed_callback);
+	app_message_register_outbox_sent(outbox_sent_callback);
+
+	const int inbox_size = 128;
+	const int outbox_size = 128;
+	app_message_open(inbox_size, outbox_size);
+	
 	s_window = window_create();
 	window_set_window_handlers(s_window, (WindowHandlers) {
 		.load = window_load,

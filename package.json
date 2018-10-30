@@ -6,7 +6,11 @@
     "pebble": {
         "displayName": "MachikoDigital",
         "enableMultiJS": false,
-        "messageKeys": [],
+        "messageKeys": [
+			"TEMPERATURE",
+			"CONDITIONS"
+		],
+		"capabilities": ["location"],
         "projectType": "native",
         "resources": {
             "media": [
