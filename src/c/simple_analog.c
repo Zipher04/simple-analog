@@ -71,14 +71,22 @@ static void update_time( void )
   text_layer_set_text( s_small_time_layer, s_time_buffer );
 }
 
-static void choose_background_bitmap( void ) {
+static void choose_background_bitmap( struct tm *tick_time ) {
 	static GBitmap *new_background_bitmap;
-	time_t now = time(NULL);
-	struct tm *time = localtime(&now);
-	bool usingBase = false;
-	if ( time->tm_wday == 0 || time->tm_wday == 6 )	//sunday and saturday
+	if ( 0 == tick_time )
 	{
-		if( time->tm_hour <= 8 )
+		time_t now = time(NULL);
+		tick_time = localtime(&now);
+	}
+	bool usingBase = false;
+	if ( tick_time->tm_mon == 11 && tick_time->tm_mday == 25 )
+	{
+		usingBase = true;
+		new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_TRANSPARENT );
+	}
+	else if ( tick_time->tm_wday == 0 || tick_time->tm_wday == 6 )	//sunday and saturday
+	{
+		if( tick_time->tm_hour <= 8 )
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_HolidaySleep );
 		else
 		{
@@ -88,10 +96,13 @@ static void choose_background_bitmap( void ) {
 	}
 	else
 	{
-		switch ( time->tm_hour )
+		switch ( tick_time->tm_hour )
 		{
 		case 6:
-			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0600 );
+			if ( tick_time->tm_min < 30 )
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0600 );
+			else
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0630 );
 			break;
 		case 7:
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_0700 );
@@ -106,7 +117,10 @@ static void choose_background_bitmap( void ) {
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1100 );
 			break;
 		case 12:
-			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1200 );
+			if ( tick_time->tm_min < 30 )
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1200 );
+			else
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1230 );
 			break;
 		case 13:
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1300 );
@@ -115,10 +129,16 @@ static void choose_background_bitmap( void ) {
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1500 );
 			break;
 		case 17:
-			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
+			if ( tick_time->tm_min < 30 )
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
+			else
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1730 );
 			break;
 		case 18:
-			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1800 );
+			if ( tick_time->tm_min < 30 )
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1800 );
+			else
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1830 );
 			break;
 		case 19:
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1900 );
@@ -127,7 +147,10 @@ static void choose_background_bitmap( void ) {
 			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2000 );
 			break;
 		case 22:
-			new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
+			//if ( tick_time->tm_min < 30 )
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2200 );
+			//else
+			//	new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_2230 );
 			break;
 		case 23:
 		case 0:
@@ -177,11 +200,15 @@ static void tick_service_callback(struct tm *tick_time, TimeUnits units_changed)
 	}
 	if ( (units_changed & HOUR_UNIT) != 0 )
 	{
-		choose_background_bitmap();
+		choose_background_bitmap( tick_time );
 	}
 	if ( (units_changed & MINUTE_UNIT) != 0 )
 	{
 		update_time();
+		if ( tick_time->tm_min == 30 )
+		{
+			choose_background_bitmap( tick_time );
+		}
 		if ( is_health_updated() )
 		{
 	  	health_reload_averages(0);
@@ -208,7 +235,18 @@ static void window_load(Window *window) {
 	s_bitmap_layer_background_base = bitmap_layer_create( GRect(0, 0, 144, 168) );
 	bitmap_layer_set_background_color( s_bitmap_layer_background_base, GColorClear );
 	bitmap_layer_set_compositing_mode( s_bitmap_layer_background_base, GCompOpSet );
-	s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
+	
+	time_t now = time(NULL);
+	struct tm* tick_time = localtime(&now);
+
+	if ( tick_time->tm_mon == 11 && tick_time->tm_mday == 25 )
+	{
+		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_XMAS );
+	}
+	else
+	{
+		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
+	}
 	s_background_bitmap_transparent = gbitmap_create_with_resource( RESOURCE_ID_TRANSPARENT );
 	layer_add_child( window_layer, bitmap_layer_get_layer(s_bitmap_layer_background_base));
 	
@@ -216,7 +254,7 @@ static void window_load(Window *window) {
 	s_bitmap_layer_background = bitmap_layer_create( GRect(16, 0, 112, 122) );
 	bitmap_layer_set_background_color( s_bitmap_layer_background, GColorClear );
 	bitmap_layer_set_compositing_mode( s_bitmap_layer_background, GCompOpSet );
-	choose_background_bitmap();
+	choose_background_bitmap(0);
 	layer_add_child( window_layer, bitmap_layer_get_layer(s_bitmap_layer_background));
 	
 	// Create small time layer

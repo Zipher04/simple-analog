@@ -35,6 +35,13 @@
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
+				{
+                    "file": "images/xmas.png",
+                    "name": "XMAS",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/menu.png",
                     "menuIcon": true,
@@ -48,21 +55,7 @@
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
-                },
-                {
-                    "file": "images/hour_hand.png",
-                    "name": "HAND_HOUR",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/hand_minute.png",
-                    "name": "HAND_MINUTE",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
+                },             
                 {
                     "file": "images/2300.png",
                     "name": "2300",
@@ -91,9 +84,23 @@
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
+				{
+                    "file": "images/1830.png",
+                    "name": "1830",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/1800.png",
                     "name": "1800",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+				{
+                    "file": "images/1730.png",
+                    "name": "1730",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
@@ -115,6 +122,13 @@
                 {
                     "file": "images/1300.png",
                     "name": "1300",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+				{
+                    "file": "images/1230.png",
+                    "name": "1230",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
@@ -154,17 +168,19 @@
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
+				{
+                    "file": "images/0630.png",
+                    "name": "0630",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/0600.png",
                     "name": "0600",
                     "spaceOptimization": "memory",
                     "targetPlatforms": null,
                     "type": "bitmap"
-                },
-				{
-                    "file": "fonts/comicbd.ttf",
-                    "name": "FONT_COMIC_BOLD_42",
-                    "type": "font"
                 },
 				{
                     "file": "fonts/comic.ttf",
