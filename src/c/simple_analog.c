@@ -243,6 +243,10 @@ static void window_load(Window *window) {
 	{
 		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_XMAS );
 	}
+	else if ( tick_time->tm_wday == 0 )
+	{
+		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_BUBBLE );
+	}
 	else
 	{
 		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_HOLIDAY );
@@ -327,7 +331,7 @@ static void window_load(Window *window) {
 	text_layer_set_background_color(s_weather_layer, GColorClear);
 	text_layer_set_text_color(s_weather_layer, GColorBlack);
 	text_layer_set_text_alignment(s_weather_layer, GTextAlignmentLeft);
-	text_layer_set_text(s_weather_layer, "Loading...");
+	//text_layer_set_text(s_weather_layer, "Loading...");
 	text_layer_set_font(s_weather_layer, fonts_get_system_font( FONT_KEY_GOTHIC_18 ) );
 	layer_add_child(window_layer, text_layer_get_layer(s_weather_layer));
 	

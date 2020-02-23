@@ -42,6 +42,13 @@
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
+				{
+                    "file": "images/bubble.png",
+                    "name": "BUBBLE",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/menu.png",
                     "menuIcon": true,
