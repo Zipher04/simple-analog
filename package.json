@@ -17,35 +17,35 @@
                 {
                     "file": "images/transparent.png",
                     "name": "TRANSPARENT",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/sleep.jpg",
                     "name": "HolidaySleep",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/holiday.png",
                     "name": "HOLIDAY",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
 				{
                     "file": "images/xmas.png",
                     "name": "XMAS",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
 				{
                     "file": "images/bubble.png",
                     "name": "BUBBLE",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -59,133 +59,126 @@
                 {
                     "file": "images/main.png",
                     "name": "main",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },             
                 {
                     "file": "images/2300.png",
                     "name": "2300",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/2200.png",
                     "name": "2200",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/2000.png",
                     "name": "2000",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1900.png",
                     "name": "1900",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
 				{
                     "file": "images/1830.png",
                     "name": "1830",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1800.png",
                     "name": "1800",
-                    "spaceOptimization": "memory",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-				{
-                    "file": "images/1730.png",
-                    "name": "1730",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1700.png",
                     "name": "1700",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1500.png",
                     "name": "1500",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1300.png",
                     "name": "1300",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
 				{
                     "file": "images/1230.png",
                     "name": "1230",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1200.png",
                     "name": "1200",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1100.png",
                     "name": "1100",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/1000.png",
                     "name": "1000",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0800.png",
                     "name": "0800",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0700.png",
                     "name": "0700",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
 				{
                     "file": "images/0630.png",
                     "name": "0630",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
                     "file": "images/0600.png",
                     "name": "0600",
-                    "spaceOptimization": "memory",
+                    "spaceOptimization": "storage",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },

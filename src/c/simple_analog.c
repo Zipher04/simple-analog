@@ -20,7 +20,7 @@ static TextLayer *s_time_layer;
 static TextLayer *s_small_time_layer;
 static TextLayer *s_weather_layer;
 
-static char s_num_buffer[4], s_day_buffer[6];
+static char s_num_buffer[11], s_day_buffer[6];
 static BitmapLayer *s_bitmap_layer_background, *s_bitmap_layer_background_base;
 static GBitmap *s_background_bitmap = 0, *s_background_bitmap_base = 0, *s_background_bitmap_transparent = 0;
 
@@ -132,7 +132,7 @@ static void choose_background_bitmap( struct tm *tick_time ) {
 			if ( tick_time->tm_min < 30 )
 				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
 			else
-				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1730 );
+				new_background_bitmap = gbitmap_create_with_resource( RESOURCE_ID_1700 );
 			break;
 		case 18:
 			if ( tick_time->tm_min < 30 )
@@ -188,22 +188,25 @@ static void date_update_proc(Layer *layer, GContext *ctx) {
 	strftime(s_day_buffer, sizeof(s_day_buffer), "%a", t);
 	text_layer_set_text(s_text_layer_weekday, s_day_buffer);
 
-	strftime(s_num_buffer, sizeof(s_num_buffer), "%d", t);
+	strftime(s_num_buffer, sizeof(s_num_buffer), "%G/%m/%d", t);
 	text_layer_set_text(s_text_layer_day, s_num_buffer);
 }
 
 static void tick_service_callback(struct tm *tick_time, TimeUnits units_changed) {
-	layer_mark_dirty(window_get_root_layer(s_window));
+	//layer_mark_dirty(window_get_root_layer(s_window));
 	if ( (units_changed & DAY_UNIT) != 0 )
 	{
 		layer_mark_dirty( s_layer_date );
+		APP_LOG( APP_LOG_LEVEL_DEBUG, "Day update triggered." );
 	}
 	if ( (units_changed & HOUR_UNIT) != 0 )
 	{
 		choose_background_bitmap( tick_time );
+		APP_LOG( APP_LOG_LEVEL_DEBUG, "Hour update triggered." );
 	}
 	if ( (units_changed & MINUTE_UNIT) != 0 )
 	{
+		APP_LOG( APP_LOG_LEVEL_DEBUG, "Minute update triggered." );
 		update_time();
 		if ( tick_time->tm_min == 30 )
 		{
@@ -211,15 +214,17 @@ static void tick_service_callback(struct tm *tick_time, TimeUnits units_changed)
 		}
 		if ( is_health_updated() )
 		{
-	  	health_reload_averages(0);
+			APP_LOG( APP_LOG_LEVEL_DEBUG, "Health update triggered." );
+			health_reload_averages(0);
 			text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
 		}
 	}
 	if ( is_battery_updated() )
 	{
-		if ( battery_is_charging() )
-			text_layer_set_text( s_text_layer_battery, "\U0001F606" );
-		else
+		APP_LOG( APP_LOG_LEVEL_DEBUG, "Battery update triggered." );
+		//if ( battery_is_charging() )
+		//	text_layer_set_text( s_text_layer_battery, "\U0001F606" );
+		//else
 			text_layer_set_text( s_text_layer_battery, battery_get_current_level_buffer() );
 	}
 }
@@ -243,7 +248,7 @@ static void window_load(Window *window) {
 	{
 		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_XMAS );
 	}
-	else if ( tick_time->tm_wday == 0 )
+	if ( tick_time->tm_wday == 0 )
 	{
 		s_background_bitmap_base = gbitmap_create_with_resource( RESOURCE_ID_BUBBLE );
 	}
@@ -289,7 +294,7 @@ static void window_load(Window *window) {
 
 	s_text_layer_weekday = text_layer_create(PBL_IF_ROUND_ELSE(
 	GRect(63, 114, 27, 20),
-	GRect(22, 107, 36, 18)));
+	GRect(105, 107, 36, 18)));
 	text_layer_set_text(s_text_layer_weekday, s_day_buffer);
 	text_layer_set_background_color(s_text_layer_weekday, GColorClear);
 	text_layer_set_text_color(s_text_layer_weekday, GColorDukeBlue );
@@ -298,7 +303,7 @@ static void window_load(Window *window) {
 
 	s_text_layer_day = text_layer_create(PBL_IF_ROUND_ELSE(
 	GRect(90, 114, 18, 20),
-	GRect(50, 107, 36, 18)));
+	GRect(18, 107, 100, 18)));
 	text_layer_set_text(s_text_layer_day, s_num_buffer);
 	text_layer_set_background_color(s_text_layer_day, GColorClear);
 	text_layer_set_text_color(s_text_layer_day, GColorDukeBlue);
@@ -306,14 +311,15 @@ static void window_load(Window *window) {
 	layer_add_child(s_layer_date, text_layer_get_layer(s_text_layer_day));
 	
 	//step layer
-	s_text_layer_step = text_layer_create( GRect(65, 107, 64, 18) );
+	//s_text_layer_step = text_layer_create( GRect(65, 107, 64, 18) );
+	s_text_layer_step = text_layer_create( GRect(0, 0, 64, 18) );
 	text_layer_set_text( s_text_layer_step, health_get_current_steps_buffer() );
 	text_layer_set_text_alignment( s_text_layer_step, GTextAlignmentCenter );
 	//static char test[] = "\U0001F4951,234";
 	//text_layer_set_text( s_text_layer_step, test );
 	text_layer_set_background_color(s_text_layer_step, GColorClear);
-	text_layer_set_text_color( s_text_layer_step, GColorDukeBlue );
-	text_layer_set_font( s_text_layer_step, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+	text_layer_set_text_color( s_text_layer_step, GColorBlack );
+	text_layer_set_font( s_text_layer_step, fonts_get_system_font(FONT_KEY_GOTHIC_18));
 	layer_add_child( window_layer, text_layer_get_layer(s_text_layer_step));
 	health_reload_averages(0);
 	
@@ -368,37 +374,37 @@ static void window_unload(Window *window) {
 	
 }
 //appmessage
-static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-	// Read tuples for data
-	Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
-	Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
+// static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+	// // Read tuples for data
+	// Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
+	// Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
 
-	// If all data is available, use it
-	if(temp_tuple && conditions_tuple) {
-	  snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)temp_tuple->value->int32);
-	  snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-	}
-	// Assemble full string and display
-	snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
-	text_layer_set_text(s_weather_layer, weather_layer_buffer);
-}
-static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
-}
+	// // If all data is available, use it
+	// if(temp_tuple && conditions_tuple) {
+	  // snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)temp_tuple->value->int32);
+	  // snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+	// }
+	// // Assemble full string and display
+	// snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+	// text_layer_set_text(s_weather_layer, weather_layer_buffer);
+// }
+// static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  // APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+// }
 
-static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
-}
+// static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  // APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+// }
 
-static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
-}
+// static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  // APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+// }
 
 static void init() {
-	app_message_register_inbox_received(inbox_received_callback);
-	app_message_register_inbox_dropped(inbox_dropped_callback);
-	app_message_register_outbox_failed(outbox_failed_callback);
-	app_message_register_outbox_sent(outbox_sent_callback);
+	// app_message_register_inbox_received(inbox_received_callback);
+	// app_message_register_inbox_dropped(inbox_dropped_callback);
+	// app_message_register_outbox_failed(outbox_failed_callback);
+	// app_message_register_outbox_sent(outbox_sent_callback);
 
 	const int inbox_size = 128;
 	const int outbox_size = 128;
